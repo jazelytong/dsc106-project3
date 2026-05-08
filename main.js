@@ -225,8 +225,8 @@ nested.forEach((values, label) => {
 
   // Set domains
   const allYears = allData.map(d => d.year);
-  xMain.domain(d3.extent(allYears));
-  xCtx .domain(d3.extent(allYears));
+  xMain.domain([1850, 2100]);
+  xCtx.domain([1850, 2100]);
 
   setYDomain(allYears);
 
