@@ -375,33 +375,31 @@ function updateBands() {
 function drawAnnotation() {
   annotG.selectAll("*").remove();
 
-  const highData = allData.filter(d =>
-    d.scenario_label === "High emissions" &&
-    d.year >= 2091 && d.year <= 2100 &&
-    visible["High emissions"]
-  );
+  // Find all visible scenarios that have data in the final decade
+  const finalDecade = allData.filter(d => d.year >= 2091 && d.year <= 2100 && visible[d.scenario_label]);
+  const visibleScenarios = d3.groups(finalDecade, d => d.scenario_label);
 
-  const lowData = allData.filter(d =>
-    d.scenario_label === "Low emissions" &&
-    d.year >= 2091 && d.year <= 2100 &&
-    visible["Low emissions"]
-  );
+  if (visibleScenarios.length < 2) return;
 
-  if (!highData.length || !lowData.length) return;
+  // Calculate average anomaly for each visible scenario in the last decade
+  const averages = visibleScenarios.map(([label, data]) => ({
+    label,
+    avg: d3.mean(data, anomalyVal)
+  })).sort((a, b) => b.avg - a.avg);
 
-  const avgHigh = d3.mean(highData, anomalyVal);
-  const avgLow = d3.mean(lowData, anomalyVal);
-  const gap = avgHigh - avgLow;
+  const highest = averages[0];
+  const lowest = averages[averages.length - 1];
+  const gap = highest.avg - lowest.avg;
 
   const xPos = W - 20;
-  const yPos = yMain(avgHigh) - 32;
+  const yPos = yMain(highest.avg) - 25;
 
   annotG.append("text")
     .attr("class", "annotation-text")
     .attr("x", xPos)
     .attr("y", yPos)
     .attr("text-anchor", "end")
-    .text(`By 2100, high emissions are about ${gap.toFixed(1)}° warmer than low emissions`);
+    .text(`Gap between ${highest.label.toLowerCase()} and ${lowest.label.toLowerCase()}: ~${gap.toFixed(1)}°${currentUnit.toUpperCase()}`);
 }
 
 // ─────────────────────────────────────────────

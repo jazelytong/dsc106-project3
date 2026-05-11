@@ -205,7 +205,7 @@
 <div class="container">
   <h1>How Much Hotter Could Los Angeles Get?</h1>
   <p class="subtitle">Yearly temperature change relative to the 1981–2010 historical baseline · CESM2 climate model · CMIP6</p>
-  <p class="data-note">Data: CMIP6 CESM2 monthly near-surface air temperature (tas, Amon) averaged to yearly values · Anomaly = yearly temperature − 1981–2010 average</p>
+  <p class="data-note">Data: CMIP6 CESM2 monthly temperature averaged to yearly values · <strong>5-year centered moving average applied to show trends</strong> · Anomaly = yearly temperature − 1981–2010 average</p>
 
   <div class="controls">
     <label>Scenarios:</label>
@@ -235,21 +235,23 @@
     <p><strong>Color palette:</strong> Gray is used for the historical series to separate past observations from future projections. Green, orange, and crimson represent low-, medium-, and high-emissions scenarios respectively, creating an intuitive progression between pathways while making the scenarios easy to distinguish visually.</p>
     <p><strong>Interactions chosen:</strong></p>
     <ul>
-      <li>Scenario toggle buttons: let users isolate any combination of scenarios and directly compare them.</li>
-      <li>Hover tooltip: shows the exact year, temperature anomaly, and raw temperature for every visible scenario so values don't need to be read off the axis.</li>
-      <li>Brush / zoom context chart: lets users drag-select any time window (e.g., 2015–2100 only) to zoom into the main chart, reducing clutter from the 1850–2014 historical baseline.</li>
-      <li>°F / °C toggle: makes the visualization accessible to both US and international audiences without re-loading data.</li>
+      <li><strong>Scenario toggle buttons:</strong> let users isolate any combination of scenarios and directly compare them.</li>
+      <li><strong>Hover tooltip:</strong> shows the exact year, temperature anomaly, and raw temperature for every visible scenario so values don't need to be read off the axis.</li>
+      <li><strong>Brush / zoom context chart:</strong> lets users drag-select any time window (e.g., 2015–2100 only) to zoom into the main chart, reducing clutter from the 1850–2014 historical baseline.</li>
+      <li><strong>°F / °C toggle:</strong> makes the visualization accessible to both US and international audiences without re-loading data.</li>
+      <li><strong>Dynamic end-century annotation:</strong> automatically calculates the temperature gap between the highest and lowest visible scenarios in the final decade (2091–2100) to provide instant, comparative context.</li>
     </ul>
-    <p><strong>Alternatives considered:</strong> We considered a ribbon/fan chart showing model uncertainty, but with only one CESM2 member per scenario the single-line approach is more honest. We also considered a heatmap by decade but found it harder to read trends than the line chart.</p>
+    <p><strong>Alternatives considered:</strong> We considered a ribbon/fan chart showing model uncertainty, but with only one CESM2 member per scenario the single-line approach is more honest. We also considered a heatmap by decade but found it harder to read trends than the line chart. We also chose to apply a 5-year smoothing to the data to highlight the climatic trend over yearly weather noise.</p>
 
     <h2>Development Process</h2>
+    <p><strong>Motivation:</strong> This visualization is motivated by the need to show how individual choices regarding global emissions directly impact local temperature changes in our community.</p>
     <p><strong>Team members:</strong> Harshatha Prasanna, Jazely Tong, Aryan Nath</p>
     <p><strong>Work split:</strong></p>
     <ul>
-      <li>Data extraction & Python EDA (checkpoint notebook): all three members (~6 person-hours)</li>
+      <li>Data extraction & Python EDA (checkpoint notebook): 3 members (~6 person-hours)</li>
       <li>D3 main chart, axes, and line rendering: 1 member (~4 hours)</li>
       <li>Tooltip and scenario buttons: 1 member (~3 hours)</li>
-      <li>Brush/context chart, unit toggle, styling, and writeup: 1 member (~3 hours)</li>
+      <li>Brush/context chart, unit toggle, styling, and writeup: 2 members (~3 hours)</li>
     </ul>
     <p><strong>Total:</strong> approximately 16 person-hours. The most time-consuming part was wrangling D3's brush + zoom interaction to correctly re-scale the x-axis of the main chart.</p>
   </div>
